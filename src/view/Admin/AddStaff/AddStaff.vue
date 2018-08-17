@@ -81,8 +81,6 @@ export default {
     gotoLinks() {
       this.$router.replace({ path: "/admin/links" });
     },
-    
-
   },
   mounted() {
     //判断用户是否登录

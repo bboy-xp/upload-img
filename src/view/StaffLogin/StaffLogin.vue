@@ -68,7 +68,7 @@ export default {
 .loginContent {
   z-index: 10;
   background-color: white;
-  width: 50%;
+  width: 40%;
   padding: 40px 40px 25px;
   margin: 12% auto 0 auto;
   border-radius: 4px;
