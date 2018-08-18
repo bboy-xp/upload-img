@@ -23,6 +23,38 @@ module.exports = {
         target: 'http://127.0.0.1:7001',
         changeOrigin: 'true',
       },
+      '/getTableDataRes': {
+        target: 'http://127.0.0.1:7001',
+        changeOrigin: 'true',
+      },
+      '/deleteStaff': {
+        target: 'http://127.0.0.1:7001',
+        changeOrigin: 'true',
+      },
+      '/staffLogin': {
+        target: 'http://127.0.0.1:7001',
+        changeOrigin: 'true',
+      },
+      '/getUpToken': {
+        target: 'http://127.0.0.1:7001',
+        changeOrigin: 'true',
+      },
+      '/changeImageUrl': {
+        target: 'http://127.0.0.1:7001',
+        changeOrigin: 'true',
+      },
+      '/getImageUrl': {
+        target: 'http://127.0.0.1:7001',
+        changeOrigin: 'true',
+      },
+      '/updateCount': {
+        target: 'http://127.0.0.1:7001',
+        changeOrigin: 'true',
+      },
+      '/getEditStaff': {
+        target: 'http://127.0.0.1:7001',
+        changeOrigin: 'true',
+      }
     },
 
     // Various Dev Server settings

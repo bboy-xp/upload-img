@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -25,18 +26,35 @@ export default {
         token:
           "DhsDWIMUrCTF_R-ff01w9ESN7vvKyLle4hzwYLJf:LtSw3jRB0X_N6WSxyarjuRC8JHM=:eyJzY29wZSI6InFyY29kZXMiLCJkZWFkbGluZSI6MTUzNDQyNzg0MH0="
       },
-      bucketHost: ""
+      bucketHost: "",
+      id: ""
     };
   },
+  async mounted() {
+    //获取url中参数
+    this.id = this.$route.query.id;
+
+    const getUpToken = await axios.get("/getUpToken");
+    this.postData.token = getUpToken.data;
+    // console.log(getUpToken.data);
+  },
   methods: {
-    handleAvatarSuccess(res, file) {
+    async handleAvatarSuccess(res, file) {
       this.bucketHost = "http://pdjslih4r.bkt.clouddn.com/" + res.key;
       this.imageUrl = URL.createObjectURL(file.raw);
-
-      this.$message({
-          message: '恭喜你，上传成功',
-          type: 'success'
+      const changeImageUrl = await axios.post("/changeImageUrl", {
+        id: this.id,
+        bucketHost: this.bucketHost
+      });
+      console.log(changeImageUrl.data);
+      if (changeImageUrl.data === "ok") {
+        this.$message({
+          message: "恭喜你，上传成功",
+          type: "success"
         });
+      }else {
+        this.$message.error("上传失败");
+      }
     },
     beforeAvatarUpload(file) {
       const isTypeAccess =

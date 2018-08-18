@@ -2,15 +2,32 @@
   <div class="content">
     <div class="text">长按或扫描二维码</div>
     <div class="text">参加客服微信进入免费领取通道</div>
-    <img class="imgContent" src="http://www.9r1zxn.cn///uploads/20180816/adfec39c948d86c1b269a8a1f60f8b34.jpeg" alt="404">
+    <img class="imgContent" :src="imageUrl" alt="404">
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
-    return {};
-  }
+    return {
+      id: "",
+      imageUrl: ""
+    };
+  },
+  async mounted() {
+    //获取url中参数
+    this.id = this.$route.query.id;
+
+    const getImageUrl = await axios.post("/getImageUrl", {
+      id: this.id
+    });
+    this.imageUrl = getImageUrl.data;
+
+    const updateCount = await axios.post("/updateCount", {
+      id: this.id
+    })
+  },
 };
 </script>
 
@@ -28,6 +45,6 @@ export default {
 }
 .imgContent {
   margin-top: 1em;
-  max-height: 60vh;
+  max-width: 85vw;
 }
 </style>

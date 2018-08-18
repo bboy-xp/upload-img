@@ -35,7 +35,51 @@
       </div>
       <div class="tableBox">
         <el-button @click="addStaff" class="addStaffBtn" type="primary"><i class="el-icon-plus"></i><span>添加链接</span></el-button>
-        
+        <el-table
+          :data="linksTableData"
+          stripe
+          style="width: 100%"
+          id="out-table">
+          <el-table-column
+            prop="id"
+            label="id"
+            width="50">
+          </el-table-column>
+          <el-table-column
+            prop="staffId"
+            label="员工名"
+            width="150">
+          </el-table-column>
+          <el-table-column
+            prop="fontUrl"
+            label="前台链接"
+            width="250">
+          </el-table-column>
+          <el-table-column
+            prop="backUrl"
+            label="后台链接"
+            width="300">
+          </el-table-column>
+          <el-table-column
+            prop="QRcodeUrl"
+            label="二维码链接"
+            width="480">
+          </el-table-column>
+          <el-table-column
+            prop="count"
+            label="投放数"
+            width="80">
+          </el-table-column>
+          <el-table-column
+            label="操作">
+            <template slot-scope="scope">
+              <div class="btnContent">
+                <div class="deleteBtn" @click="handleEdit(scope.$index, scope.row)"><i class="el-icon-delete"></i><span class="text-margin">修改</span></div>
+                <div class="deleteBtn" @click="handleDelete(scope.$index, scope.row)"><i class="el-icon-delete"></i><span class="text-margin">删除</span></div>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
   </div>
@@ -46,6 +90,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      linksTableData: []
     };
   },
   async mounted() {
@@ -56,14 +101,44 @@ export default {
       this.$router.replace("/admin/adminLogin");
     }
 
-    
-
+    const getTableDataRes = await axios.get("/getTableDataRes");
+    this.linksTableData = getTableDataRes.data;
+    // console.log(getTableDataRes.data);
   },
   methods: {
     addStaff() {
       this.$router.replace({ path: "/admin/addStaff" });
+    },
+    handleDelete(index, row) {
+      console.log(index);
+      console.log(row);
+      this.$confirm("此操作将永久删除该记录, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+        center: true
+      })
+        .then(async () => {
+          const result = await axios.post("/deleteStaff", row);
+
+          this.linksTableData = result.data;
+
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    handleEdit(index, row) {
+      const id = row.id;
+      this.$router.replace({ path: "/admin/editStaff?id=" + id});
     }
-    
   }
 };
 </script>
@@ -153,6 +228,9 @@ export default {
   padding: 10px;
   overflow: scroll;
 }
+.btnContent {
+  display: flex;
+}
 .deleteBtn {
   height: 24px;
   width: 50px;
@@ -162,6 +240,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 10px
 }
 .text-margin {
   margin-left: 3px;

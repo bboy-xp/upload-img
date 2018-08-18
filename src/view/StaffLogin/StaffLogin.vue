@@ -22,28 +22,33 @@ export default {
     return {
       account: "",
       password: "",
+      id: ""
     };
   },
   async mounted() {
+    //获取url中参数
+    this.id = this.$route.query.id;
   },
   methods: {
     async loginSubmit() {
       console.log(this.account,this.password);
-      // const loginRes = await axios.post('/staffLogin',{
-      //   account: this.account,
-      //   password: this.password
-      // });
-      // if(loginRes.data === "success") {
-      //   this.$message({
-      //     message: '登录成功',
-      //     type: 'success'
-      //   });
-      //   localStorage.setItem("adminId", this.account);
-      //   this.$router.replace("/admin/links");
+      const loginRes = await axios.post('/staffLogin',{
+        account: this.account,
+        password: this.password,
+        id: this.id
+      });
+      // console.log(loginRes.data);
+      if(loginRes.data === "success") {
+        this.$message({
+          message: '登录成功',
+          type: 'success'
+        });
+        localStorage.setItem("staffId", this.account);
+        this.$router.replace("/back?id="+this.id);
 
-      // }else {
-      //   this.$message.error('登录失败，密码错误');
-      // }
+      }else {
+        this.$message.error('登录失败，密码错误');
+      }
     }
   }
 };
