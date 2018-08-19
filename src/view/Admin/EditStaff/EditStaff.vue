@@ -34,10 +34,6 @@
       <div class="tableBox">
         <div class="addStaffContent">
           <div class="inputContent">
-            <span class="staffNameText">用户名：</span>
-            <el-input v-model="staffId" placeholder="请输入用户名"></el-input>
-          </div>
-          <div class="inputContent">
             <span class="staffNameText">密码：</span>
             <el-input v-model="password" placeholder="请输入密码"></el-input>
           </div>
@@ -55,17 +51,30 @@ import axios from "axios";
 export default {
   data() {
     return {
-      staffId: "",
       password: "",
+      id: ""
     };
   },
   methods: {
     async updateStaff() {
-      
+      const updateStaffRes = await axios.post("/updateStaff", {
+        password: this.password,
+        id: this.id
+      });
+      // console.log(updateStaffRes.data);
+      if (updateStaffRes.data === "success") {
+        this.$message({
+          type: "success",
+          message: "修改成功!"
+        });
+        this.$router.replace({ path: "/admin/links" });
+      }else {
+        this.$message.error("修改失败");
+      }
     },
     gotoLinks() {
       this.$router.replace({ path: "/admin/links" });
-    },
+    }
   },
   async mounted() {
     //判断用户是否登录
@@ -80,8 +89,7 @@ export default {
     const getEditStaff = await axios.post("/getEditStaff", {
       id: this.id
     });
-    console.log(getEditStaff.data);
-    this.staffId = getEditStaff.data.staffId;
+    // console.log(getEditStaff.data);
     this.password = getEditStaff.data.password;
   }
 };
@@ -147,7 +155,7 @@ export default {
 .nav-heading-text {
   font-weight: bold;
   margin-right: 10px;
-  font-size: 16px
+  font-size: 16px;
 }
 .tableContent {
   flex: 1;

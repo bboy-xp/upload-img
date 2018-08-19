@@ -54,6 +54,10 @@ module.exports = {
       '/getEditStaff': {
         target: 'http://127.0.0.1:7001',
         changeOrigin: 'true',
+      },
+      '/updateStaff': {
+        target: 'http://127.0.0.1:7001',
+        changeOrigin: 'true',
       }
     },
 
